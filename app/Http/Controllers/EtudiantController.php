@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
 use App\Models\Ville;
+
+
 
 class EtudiantController extends Controller
 {
@@ -13,7 +17,7 @@ class EtudiantController extends Controller
      */
     public function index()
     {
-        $etudiants = Etudiant::all(); 
+        $etudiants = Etudiant::orderBy('created_at', 'desc')->get();
         return view('etudiant.index', ["etudiants" => $etudiants]);
     }
 
@@ -36,9 +40,17 @@ class EtudiantController extends Controller
             'adresse' => 'required|string',
             'telephone' => 'nullable|string',
             'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:6', 
             'date_de_naissance' => 'required|date', 
             'ville_id' => 'required|integer', 
         ]);
+
+        $user = User::create([
+            'name' => $request->nom,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
         $etudiant = Etudiant::create([
             'nom' => $request->nom,
             'adresse' => $request->adresse,
@@ -46,11 +58,11 @@ class EtudiantController extends Controller
             'email' => $request->email,
             'date_de_naissance' => $request->date_de_naissance,
             'ville_id' => $request->ville_id, 
-            'user_id' => auth()->id(),
+            'user_id' => $user->id,
         ]);
     
 
-        return redirect()->route('etudiant.show', $etudiant->id)->with('success', 'Etudiant créé avec succès.');
+        return redirect()->route('login')->with('success', 'Etudiant créé avec succès.');
     }
     /**
      * Display the specified resource.

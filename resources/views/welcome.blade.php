@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Welcome')
+@section('title', trans('lang.text_welcome'))
 
 @section('content')
 <style>
@@ -43,9 +43,7 @@
                 </div>
                 
                 <div class="card-body">
-                    <p>Bienvenue sur l'application du Collège Maisonneuve !
-
-Nous sommes ravis de vous accueillir dans notre espace dédié pour se connecter, partager et s'informer au sein de notre communauté étudiante. Notre objectif est de créer un environnement en ligne dynamique où vous pouvez interagir, échanger des idées et rester informé sur tout ce qui se passe au Collège Maisonneuve.</p><br>
+                    <p>Notre objectif est de créer un environnement en ligne dynamique où vous pouvez interagir, échanger des idées et rester informé sur tout ce qui se passe au Collège Maisonneuve.</p><br>
 <p>L'équipe de l'application du Collège Maisonneuve</p>
                 </div>
                 <div class="card-footer text-center">
