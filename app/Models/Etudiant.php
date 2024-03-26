@@ -34,4 +34,10 @@ class Etudiant extends Model
     return $this->hasMany(Article::class);
 }
 
+public function documents()
+{
+    return $this->hasMany(Document::class);
+}
+
+
 }

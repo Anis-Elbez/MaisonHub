@@ -57,10 +57,19 @@ Route::delete('/article/{article}', [ArticleController::class, 'destroy'])->name
 
 
 // Gestion Documents
-Route::get('/documents', [DocumentController::class, 'index'])->name('document.index');
+Route::get('/documents', [DocumentController::class, 'index'])->name('document.index')->middleware('auth');;
 
 // Ajouter un document
 Route::get('/create/document', [DocumentController::class, 'create'])->name('document.create');
 Route::post('/create/document', [DocumentController::class, 'store'])->name('document.upload');
 //afficher un document
 Route::get('/document/{document}', [DocumentController::class, 'show'])->name('document.show');
+
+//modifier un document
+Route::get('/documents/{document}/edit', [DocumentController::class, 'edit'])->name('document.edit')->middleware('auth');
+Route::put('/documents/{document}', [DocumentController::class, 'update'])->name('document.update')->middleware('auth');
+
+
+//supprimer un document
+Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('document.destroy')->middleware('auth');
+

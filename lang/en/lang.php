@@ -52,6 +52,10 @@ return [
 	'forum_lang_traduction' => 'You can traduct your subject in French here.',
 	'forum_article_nom'	=> 'title_en',
 	'forum_article_description'	=> 'content_en',
+    'text_forum' => 'Forum',
+    'text_view_articles' => 'Articles',
+    'text_view_students' => 'Students',
+    'text_view_documents' => 'Documents',
 
 
 

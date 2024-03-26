@@ -47,6 +47,10 @@ return [
 	'forum_lang_traduction' => 'Vous pouvez traduire votre article en Anglais ici',
 	'forum_article_nom'	=> 'title_fr',
 	'forum_article_description'	=> 'content_fr',
+    'text_forum' => 'Forum',
+    'text_view_articles' => 'Articles',
+    'text_view_students' => 'Etudiants',
+    'text_view_documents' => 'Documents',
 
 	
 ];

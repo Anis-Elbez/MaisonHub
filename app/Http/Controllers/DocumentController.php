@@ -13,12 +13,14 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        if (Auth::check()) {
-            $documents = Document::where('etudiant_id', Auth::user()->etudiant->id)->paginate(10);
-            $messageRetour = session('messageRetour', '');
-            return view('document.index', compact('documents', 'messageRetour'));
-        }
-        return redirect()->route('login');
+        // Sélectionne uniquement les documents de l'utilisateur connecté
+        // $documents = Document::where('etudiant_id', Auth::user()->etudiant->id)->get();
+        // Sélectionne tous les documents pour les utilisateurs authentifiés
+        //$documents = Document::paginate(10); // Utilisez paginate pour une meilleure gestion des documents
+        $documents = Document::latest()->paginate(10);
+
+
+        return view('document.index', compact('documents'));
     }
 
     /**
@@ -90,24 +92,66 @@ class DocumentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
+    public function edit(Document $document)
+    {    
+        // Vérifier si l'utilisateur courant est le propriétaire du document.
+        if ($document->etudiant->user_id != Auth::id()) {
+            return redirect()->route('document.index')->with('error', 'Vous n\'êtes pas autorisé à modifier ce document.');
+        }
+    
+        return view('document.edit', compact('document'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    
+    
+    public function update(Request $request, Document $document)
     {
-        //
+        $request->validate([
+            'document_nom' => 'required|string|max:255',
+            'document_nom_en' => 'nullable|string|max:255',
+            'document' => 'nullable|file|mimes:pdf,zip,doc,docx',
+        ]);
+    
+        if ($request->hasFile('document')) {
+            $file = $request->file('document');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('uploads/documents', $filename, 'public');
+        
+            $document->document_path = $filePath;
+        }
+    
+        $document->document_nom = $request->input('document_nom');
+        $document->document_nom_en = $request->input('document_nom_en', '');
+    
+        $document->save();
+    
+        return redirect()->route('document.index')->with('success', 'Document mis à jour avec succès.');
     }
+    
+    
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+  
+     public function destroy(Document $document)
+     {
+         // Assurez-vous que l'utilisateur est connecté.
+         if (!Auth::check()) {
+             return redirect()->route('login');
+         }
+     
+         // Obtenez l'ID de l'utilisateur lié à l'étudiant qui a créé le document
+         $userDocument = $document->etudiant->user_id;
+     
+         // Vérifiez si l'utilisateur connecté est l'auteur du document
+         if (Auth::id() != $userDocument) {
+             return back()->with('error', 'Vous n\'êtes pas autorisé à supprimer ce document.');
+         }
+     
+         // Si l'utilisateur est autorisé, supprimez le document
+         $document->delete();
+         return redirect()->route('document.index')->with('success', 'Document supprimé avec succès.');
+     }
+     
+    
 }

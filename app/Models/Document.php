@@ -16,6 +16,6 @@ class Document extends Model
 
     public function etudiant()
     {
-        return $this->belongsTo(Etudiant::class);
+        return $this->belongsTo(Etudiant::class, 'etudiant_id');
     }
 }

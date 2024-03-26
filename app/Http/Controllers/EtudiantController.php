@@ -40,7 +40,7 @@ class EtudiantController extends Controller
             'adresse' => 'required|string',
             'telephone' => 'nullable|string',
             'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:6', 
+            'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*[A-Z])(?=.*[!@#$%^&*])/',],
             'date_de_naissance' => 'required|date', 
             'ville_id' => 'required|integer', 
         ]);

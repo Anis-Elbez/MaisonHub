@@ -39,8 +39,8 @@ class AuthController extends Controller
         $request->validate([
         'nom' => 'required|string|max:255',
         'email' => 'required|string|email|max:255',
-        'password' => 'required|string|min:6',
-        'ville_id' => 'required|exists:villes,id', // Vérifie que l'ID de la ville existe
+        'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*[A-Z])(?=.*[!@#$%^&*])/',],
+        'ville_id' => 'required|exists:villes,id',
     ]);
     
         $user = new User;

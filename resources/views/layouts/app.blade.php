@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name') }} - @yield('title')</title>
     <link rel="stylesheet" href="{{ asset('css/styles.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body, html {
             height: 100%;
@@ -33,18 +34,30 @@
         <img src="{{ asset('logo.png') }}" alt="logo">
       </a>
       <ul class="nav nav-pills">
-          <li class="nav-item"><a href="" class="nav-link">@lang('lang.text_hello') @if(Auth::check()) {{ Auth::user()->name }} @else @lang('lang.guest') @endif</a></li>
-
-        @guest
-          <li class="nav-item"><a href="{{ route('registration') }}" class="nav-link">@lang('lang.text_registration')</a></li>
-          <li class="nav-item"><a href="{{ route('login') }}" class="nav-link">@lang('lang.text_login')</a></li>
-        @else
-          
-          <li class="nav-item"><a href="{{ route('etudiant.index') }}" class="nav-link " aria-current="page">@lang('lang.text_students')</a></li>
-          <li class="nav-item"><a href="{{ route('article.index') }}" class="nav-link">@lang('lang.text_view')</a></li> 
-         <li><a class="nav-link " href="{{route('logout')}}">@lang('lang.text_logout')</a></li>
-          @endguest
+    <li class="nav-item">
+        <a href="" class="nav-link">@lang('lang.text_hello') @if(Auth::check()) {{ Auth::user()->name }} @else @lang('lang.guest') @endif</a>
+    </li>
+    @guest
+    <li class="nav-item">
+        <a href="{{ route('registration') }}" class="nav-link">@lang('lang.text_registration')</a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('login') }}" class="nav-link">@lang('lang.text_login')</a>
+    </li>
+    @else
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            @lang('lang.text_forum')
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="{{ route('article.index') }}">@lang('lang.text_view_articles')</a></li>
+            <li><a class="dropdown-item" href="{{ route('etudiant.index') }}">@lang('lang.text_view_students')</a></li>
+            <li><a class="dropdown-item" href="{{ route('document.index') }}">@lang('lang.text_view_documents')</a></li>
         </ul>
+    </li>
+    <li><a class="nav-link" href="{{ route('logout') }}">@lang('lang.text_logout')</a></li>
+    @endguest
+</ul>
         <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
